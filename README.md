@@ -50,6 +50,21 @@ npm run build      # type-check + production build
 npm run preview    # serve the built PWA (service worker only runs here, not in dev)
 ```
 
+### Run on Windows (double-click, no CLI)
+
+If you just want to try the app on a Windows PC, install
+[Node.js](https://nodejs.org/) (LTS) once, then double-click one of these in the
+project folder:
+
+- **`start.bat`** — dev mode. Installs dependencies on first run, starts the app, and
+  opens your browser at `http://localhost:5173`. Best for trying out the UI.
+- **`test-pwa.bat`** — builds the production app and serves it at
+  `http://localhost:4173` so you can **install it as an app** (install icon in the
+  address bar) and **test offline** (DevTools → Network → Offline → reload) — the same
+  mode the iPad uses.
+
+Leave the black command window open while using the app; close it to stop the server.
+
 ### Install on an iPad
 
 1. `npm run build && npm run preview -- --host` and note the Network URL.
