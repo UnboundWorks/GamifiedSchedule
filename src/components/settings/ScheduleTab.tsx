@@ -10,6 +10,7 @@ import {
   ProfileMultiSelect,
   WeekdayPicker,
 } from '../common/FormControls'
+import { IconPicker } from '../common/IconPicker'
 import { formatTime } from '../../lib/dates'
 import type { ScheduleItem, ScheduleItemType, Weekday } from '../../domain/types'
 
@@ -100,25 +101,20 @@ export function ScheduleTab() {
       >
         {draft && (
           <div className="space-y-4">
-            <div className="flex gap-3">
-              <Field label="Icon">
-                <input
-                  className="input w-20 text-center text-2xl"
-                  value={draft.icon}
-                  onChange={(e) => setDraft({ ...draft, icon: e.target.value })}
-                />
-              </Field>
-              <div className="flex-1">
-                <Field label="Title">
-                  <input
-                    className="input"
-                    value={draft.title}
-                    onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-                    placeholder="Soccer practice"
-                  />
-                </Field>
-              </div>
-            </div>
+            <Field label="Icon">
+              <IconPicker
+                value={draft.icon}
+                onChange={(icon) => setDraft({ ...draft, icon })}
+              />
+            </Field>
+            <Field label="Title">
+              <input
+                className="input"
+                value={draft.title}
+                onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+                placeholder="Soccer practice"
+              />
+            </Field>
 
             <Field label="Type">
               <select

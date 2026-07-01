@@ -8,6 +8,7 @@ import { RoutineRunner } from './screens/RoutineRunner'
 import { Chores } from './screens/Chores'
 import { Rewards } from './screens/Rewards'
 import { Challenges } from './screens/Challenges'
+import { Help } from './screens/Help'
 import { Settings } from './screens/Settings'
 import { Approvals } from './screens/Approvals'
 
@@ -36,6 +37,7 @@ export const router = createHashRouter([
           { path: '/chores', element: <Chores /> },
           { path: '/rewards', element: <Rewards /> },
           { path: '/challenges', element: <Challenges /> },
+          { path: '/help', element: <Help /> },
           {
             element: <RequireParent />,
             children: [

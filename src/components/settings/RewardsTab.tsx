@@ -4,6 +4,7 @@ import { db } from '../../db/db'
 import { rewardsRepo } from '../../repositories/content.repo'
 import { Modal } from '../common/Modal'
 import { Field, Toggle } from '../common/FormControls'
+import { IconPicker } from '../common/IconPicker'
 import type { Reward } from '../../domain/types'
 
 type Draft = Omit<Reward, 'id' | 'createdAt' | 'updatedAt'> & {
@@ -88,25 +89,20 @@ export function RewardsTab() {
       >
         {draft && (
           <div className="space-y-4">
-            <div className="flex gap-3">
-              <Field label="Icon">
-                <input
-                  className="input w-20 text-center text-2xl"
-                  value={draft.icon}
-                  onChange={(e) => setDraft({ ...draft, icon: e.target.value })}
-                />
-              </Field>
-              <div className="flex-1">
-                <Field label="Title">
-                  <input
-                    className="input"
-                    value={draft.title}
-                    onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-                    placeholder="Ice cream trip"
-                  />
-                </Field>
-              </div>
-            </div>
+            <Field label="Icon">
+              <IconPicker
+                value={draft.icon}
+                onChange={(icon) => setDraft({ ...draft, icon })}
+              />
+            </Field>
+            <Field label="Title">
+              <input
+                className="input"
+                value={draft.title}
+                onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+                placeholder="Ice cream trip"
+              />
+            </Field>
 
             <Field label="Description (optional)">
               <input

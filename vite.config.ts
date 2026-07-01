@@ -11,8 +11,8 @@ export default defineConfig({
       injectRegister: 'auto',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'icons/*.png'],
       manifest: {
-        name: 'GamifiedSchedule',
-        short_name: 'Schedule',
+        name: 'Dubbs Family Quest',
+        short_name: 'Dubbs Quest',
         description: 'Family schedule, chores, routines and rewards',
         theme_color: '#4f46e5',
         background_color: '#0f172a',

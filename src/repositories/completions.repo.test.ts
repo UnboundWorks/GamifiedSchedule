@@ -2,12 +2,16 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { db } from '../db/db'
 import { resetToSeed } from '../db/seed'
 import { getSettings } from './settings.repo'
+import { createProfile } from './profiles.repo'
 import { toggleCompletion } from './completions.repo'
 import type { Profile, TaskInstance } from '../domain/types'
 
-async function firstChild(): Promise<Profile> {
-  const kids = await db.profiles.where('role').equals('child').toArray()
-  return kids[0]
+// Create a fresh, zero-state child so assertions don't depend on the rich seed.
+async function freshChild(): Promise<Profile> {
+  return createProfile(
+    { role: 'child', name: 'Testy', avatar: '🧪', color: '#000', pin: null },
+    0,
+  )
 }
 
 function choreInstance(profile: Profile, points = 10, requiresApproval = false): TaskInstance {
@@ -28,10 +32,15 @@ function choreInstance(profile: Profile, points = 10, requiresApproval = false):
 describe('toggleCompletion', () => {
   beforeEach(async () => {
     await resetToSeed(0)
+    // Start from a clean history so per-profile counts are deterministic
+    // (keep badge definitions + settings from the seed).
+    await db.completions.clear()
+    await db.badgeAwards.clear()
+    await db.redemptions.clear()
   })
 
   it('awards points + xp and logs a completion', async () => {
-    const profile = await firstChild()
+    const profile = await freshChild()
     const settings = await getSettings()
     const before = profile.points
     const res = await toggleCompletion(profile, choreInstance(profile), settings, new Date('2026-07-01T09:00:00'))
@@ -47,14 +56,14 @@ describe('toggleCompletion', () => {
   })
 
   it('awards a first-of-day and earns the starter badge', async () => {
-    const profile = await firstChild()
+    const profile = await freshChild()
     const settings = await getSettings()
     const res = await toggleCompletion(profile, choreInstance(profile), settings, new Date('2026-07-01T09:00:00'))
     expect(res.newBadges.some((b) => b.id === 'badge-first-step')).toBe(true)
   })
 
   it('undoes a completion and reverses points', async () => {
-    const profile = await firstChild()
+    const profile = await freshChild()
     const settings = await getSettings()
     const inst = choreInstance(profile)
     await toggleCompletion(profile, inst, settings, new Date('2026-07-01T09:00:00'))
@@ -70,7 +79,7 @@ describe('toggleCompletion', () => {
   })
 
   it('holds points pending when approval is required', async () => {
-    const profile = await firstChild()
+    const profile = await freshChild()
     const settings = await getSettings()
     const res = await toggleCompletion(
       profile,

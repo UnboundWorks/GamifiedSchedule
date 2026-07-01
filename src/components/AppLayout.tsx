@@ -26,6 +26,7 @@ const NAV: NavItem[] = [
   { to: '/chores', label: 'Chores', icon: '🧹' },
   { to: '/rewards', label: 'Rewards', icon: '🎁' },
   { to: '/challenges', label: 'Quests', icon: '🏁' },
+  { to: '/help', label: 'Help', icon: '❓' },
   { to: '/settings', label: 'Settings', icon: '⚙️', parentOnly: true },
 ]
 

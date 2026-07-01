@@ -47,8 +47,8 @@ export function Login() {
     <div className="safe-top safe-bottom flex min-h-full flex-col items-center justify-center p-6">
       <div className="mb-8 text-center">
         <div className="text-5xl">🗓️</div>
-        <h1 className="mt-2 text-3xl font-bold">GamifiedSchedule</h1>
-        <p className="text-slate-500 dark:text-slate-400">Who's using the app?</p>
+        <h1 className="mt-2 text-3xl font-bold">Dubbs Family Quest</h1>
+        <p className="text-slate-500 dark:text-slate-400">Who's playing today?</p>
       </div>
 
       {!selected ? (

@@ -11,6 +11,7 @@ import {
   ProfileMultiSelect,
   WeekdayPicker,
 } from '../common/FormControls'
+import { IconPicker } from '../common/IconPicker'
 import type { Routine, RoutineStep, Weekday } from '../../domain/types'
 
 type Draft = Omit<Routine, 'id' | 'createdAt' | 'updatedAt'> & { id?: string }
@@ -123,14 +124,13 @@ export function RoutinesTab() {
       >
         {draft && (
           <div className="space-y-4">
+            <Field label="Icon">
+              <IconPicker
+                value={draft.icon}
+                onChange={(icon) => setDraft({ ...draft, icon })}
+              />
+            </Field>
             <div className="flex gap-3">
-              <Field label="Icon">
-                <input
-                  className="input w-20 text-center text-2xl"
-                  value={draft.icon}
-                  onChange={(e) => setDraft({ ...draft, icon: e.target.value })}
-                />
-              </Field>
               <div className="flex-1">
                 <Field label="Name">
                   <input
@@ -179,10 +179,10 @@ export function RoutinesTab() {
               <div className="space-y-2">
                 {draft.steps.map((s, i) => (
                   <div key={s.id} className="flex items-center gap-2">
-                    <input
-                      className="input w-14 text-center text-xl"
+                    <IconPicker
+                      compact
                       value={s.icon ?? ''}
-                      onChange={(e) => setStep(i, { icon: e.target.value })}
+                      onChange={(icon) => setStep(i, { icon })}
                     />
                     <input
                       className="input flex-1"

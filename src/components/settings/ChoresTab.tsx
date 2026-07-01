@@ -11,6 +11,7 @@ import {
   Toggle,
   WeekdayPicker,
 } from '../common/FormControls'
+import { IconPicker } from '../common/IconPicker'
 import type { Chore, ChoreCadence, Weekday } from '../../domain/types'
 
 type Draft = Omit<Chore, 'id' | 'createdAt' | 'updatedAt'> & { id?: string }
@@ -94,25 +95,20 @@ export function ChoresTab() {
       >
         {draft && (
           <div className="space-y-4">
-            <div className="flex gap-3">
-              <Field label="Icon">
-                <input
-                  className="input w-20 text-center text-2xl"
-                  value={draft.icon}
-                  onChange={(e) => setDraft({ ...draft, icon: e.target.value })}
-                />
-              </Field>
-              <div className="flex-1">
-                <Field label="Title">
-                  <input
-                    className="input"
-                    value={draft.title}
-                    onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-                    placeholder="Take out trash"
-                  />
-                </Field>
-              </div>
-            </div>
+            <Field label="Icon">
+              <IconPicker
+                value={draft.icon}
+                onChange={(icon) => setDraft({ ...draft, icon })}
+              />
+            </Field>
+            <Field label="Title">
+              <input
+                className="input"
+                value={draft.title}
+                onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+                placeholder="Take out trash"
+              />
+            </Field>
 
             <div className="flex gap-3">
               <Field label="Cadence">
