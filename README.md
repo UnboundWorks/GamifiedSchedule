@@ -65,15 +65,43 @@ project folder:
 
 Leave the black command window open while using the app; close it to stop the server.
 
-### Install on an iPad
+### Host it 24/7 on a Windows PC (use it from the iPad anytime)
 
-1. `npm run build && npm run preview -- --host` and note the Network URL.
-2. Open that URL in iPad Safari.
-3. **Share → Add to Home Screen**. Launch from the icon — it runs standalone and
-   works offline.
+Run it on a PC that stays on, and open it from the iPad over your home Wi-Fi — no
+cloud, no monthly cost. Each device keeps its own data on-device (the PC only serves
+the app files).
 
-For real use, host the contents of `dist/` on any static host (or the same LAN
-machine) and add it to the home screen once.
+**Quick way (leave it running):** double-click **`host.bat`**. It builds the app and
+serves it, printing a `Network:` address like `http://192.168.0.67:4173/`. Open that in
+iPad Safari → **Share → Add to Home Screen**.
+
+**Always-on way (starts itself after reboots):**
+
+1. **Right-click `setup-autostart.bat` → Run as administrator** (once). This opens the
+   firewall for port 4173, registers the host to start at login, and starts it now. It
+   prints the address(es) to use.
+2. In your **router**, give this PC a **reserved / static IP** so its address never
+   changes (otherwise the iPad's saved link may break after a reboot).
+3. On the iPad, open `http://<pc-ip>:4173` in **Safari → Share → Add to Home Screen**.
+
+To stop auto-starting, right-click **`remove-autostart.bat` → Run as administrator**.
+
+**Updating to a newer version:** in the project folder run `git pull`, then restart the
+host (close the window and re-run `host.bat`, or reboot). If dependencies changed, run
+`npm install` once. The host rebuilds on each start, so you always serve the latest.
+
+> Troubleshooting "Safari can't open the page": it's almost always the **Windows
+> Firewall** (run `setup-autostart.bat` as admin, or allow port 4173) or the iPad being
+> on a **different Wi-Fi** (avoid Guest networks / separate 2.4GHz vs 5GHz names).
+
+### Install on an iPad (summary)
+
+1. Get the app on your network (either `host.bat` above, or `npm run build && npm run
+   preview -- --host`) and note the **Network** URL.
+2. Open that URL in **iPad Safari**.
+3. **Share → Add to Home Screen**. Launch from the icon — it runs standalone and, once
+   loaded, works offline. Data lives on the iPad; move a setup between devices with
+   **Settings → Data → Export/Import**.
 
 ### Icons
 
