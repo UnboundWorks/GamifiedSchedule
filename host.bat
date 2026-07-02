@@ -47,9 +47,12 @@ if errorlevel 1 (
 
 echo.
 echo   ===============================================================
-echo   Dubbs Family Quest is now serving on your network.
-echo   Open the "Network:" address below on your iPad's Safari,
-echo   then Share -^> Add to Home Screen.
+echo   Dubbs Family Quest hub is now serving on your network.
+echo   This PC also stores the shared family data, so every device
+echo   (iPad, phones) stays in sync automatically.
+echo   Open the "Local:" address shown below from this PC, or
+echo   http://THIS-PC-IP:4173 from your iPad's Safari, then
+echo   Share -^> Add to Home Screen.
 echo   Keep this window open (or use setup-autostart.bat for 24/7).
 echo   ===============================================================
 echo.

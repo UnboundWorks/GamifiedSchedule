@@ -3,6 +3,7 @@ import { useSettings } from '../../hooks/data'
 import { updateSettings } from '../../repositories/settings.repo'
 import { downloadBackup, importFromFile } from '../../db/backup'
 import { resetToSeed } from '../../db/seed'
+import { pushReplaceFromLocal } from '../../sync/sync'
 import { Field, Toggle } from '../common/FormControls'
 import { useUI } from '../../store/ui'
 import type { Settings, ThemePref } from '../../domain/types'
@@ -24,6 +25,7 @@ export function BackupTab() {
     )
       return
     const res = await importFromFile(file)
+    if (res.ok) await pushReplaceFromLocal() // make the hub + other devices adopt it
     pushToast(res.ok ? 'Backup restored' : res.reason ?? 'Import failed', res.ok ? '✅' : '⚠️')
   }
 
@@ -34,6 +36,7 @@ export function BackupTab() {
       )
     ) {
       await resetToSeed()
+      await pushReplaceFromLocal() // make the hub + other devices adopt the reset
       pushToast('Reset to sample data', '🔄')
     }
   }

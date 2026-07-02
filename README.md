@@ -68,8 +68,10 @@ Leave the black command window open while using the app; close it to stop the se
 ### Host it 24/7 on a Windows PC (use it from the iPad anytime)
 
 Run it on a PC that stays on, and open it from the iPad over your home Wi-Fi — no
-cloud, no monthly cost. Each device keeps its own data on-device (the PC only serves
-the app files).
+cloud, no monthly cost. The PC also acts as the family **data hub**: every device
+(iPad, phones, PCs) **syncs automatically** through it, so a change made anywhere shows
+up everywhere. Each device also keeps a local copy, so it keeps working offline and
+catches up when it's back on your network. Nothing leaves your home network.
 
 **Quick way (leave it running):** double-click **`host.bat`**. It builds the app and
 serves it, printing a `Network:` address like `http://192.168.0.67:4173/`. Open that in
@@ -93,6 +95,17 @@ host (close the window and re-run `host.bat`, or reboot). If dependencies change
 > Troubleshooting "Safari can't open the page": it's almost always the **Windows
 > Firewall** (run `setup-autostart.bat` as admin, or allow port 4173) or the iPad being
 > on a **different Wi-Fi** (avoid Guest networks / separate 2.4GHz vs 5GHz names).
+
+**How sync works:** the hub stores the shared data in `server/data.json`. Devices pull
+each other's changes every few seconds and push their own; edits merge per-record
+(last-writer-wins for the same field; independent completions all survive). Deletions
+and "Reset to sample data" / "Import" propagate to every device. A small **Synced /
+Offline** chip in the app header shows the current state.
+
+> Note: over plain `http://<ip>` (not HTTPS), iOS won't run the offline service worker,
+> so if the hub PC is **off**, the app won't load on the iPad — which is fine since the
+> hub is meant to stay on 24/7. (Data itself is safe on each device regardless.) If you
+> later want true offline-on-iPad, serve the hub over HTTPS — ask and I can add that.
 
 ### Install on an iPad (summary)
 

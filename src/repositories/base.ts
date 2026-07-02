@@ -1,5 +1,6 @@
 import type { Table } from 'dexie'
 import { uid } from '../lib/id'
+import { recordDeletion } from '../sync/tombstones'
 
 interface BaseEntity {
   id: string
@@ -34,7 +35,10 @@ export function makeRepo<T extends BaseEntity>(table: Table<T, string>) {
     async put(entity: T, now: number) {
       await table.put({ ...entity, updatedAt: now })
     },
-    remove: (id: string) => table.delete(id),
+    async remove(id: string) {
+      await table.delete(id)
+      await recordDeletion(table.name, id)
+    },
     table,
   }
 }

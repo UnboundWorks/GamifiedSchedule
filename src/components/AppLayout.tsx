@@ -12,6 +12,24 @@ import { Confetti } from './common/Confetti'
 import { Toaster } from './common/Toaster'
 import { CelebrationModal } from './common/CelebrationModal'
 import { useApplyTheme } from '../hooks/useTheme'
+import { useSyncStatus } from '../sync/sync'
+
+function SyncChip() {
+  const mode = useSyncStatus((s) => s.mode)
+  if (mode === 'local') return null // no hub in use
+  const map = {
+    online: { text: 'Synced', cls: 'text-green-600 dark:text-green-400', dot: 'bg-green-500' },
+    syncing: { text: 'Syncing…', cls: 'text-slate-400', dot: 'bg-amber-400 animate-pulse' },
+    offline: { text: 'Offline', cls: 'text-slate-400', dot: 'bg-slate-400' },
+  } as const
+  const s = map[mode as keyof typeof map] ?? map.offline
+  return (
+    <span className={`flex items-center gap-1 text-[11px] font-medium ${s.cls}`}>
+      <span className={`h-2 w-2 rounded-full ${s.dot}`} />
+      {s.text}
+    </span>
+  )
+}
 
 interface NavItem {
   to: string
@@ -92,6 +110,7 @@ export function AppLayout() {
             <span className="text-lg font-bold text-amber-500">
               ⭐ {stats?.points ?? profile.points}
             </span>
+            <SyncChip />
             <button
               className="text-xs text-slate-400 underline"
               onClick={() => {

@@ -7,3 +7,5 @@ coverage
 .vite
 dev-dist
 *.tsbuildinfo
+server/data.json
+server/data.json.tmp

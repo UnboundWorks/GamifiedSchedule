@@ -10,6 +10,7 @@ import { uid } from '../lib/id'
 import { levelForXp } from '../domain/gamification'
 import { newlyEarnedBadges } from '../domain/badges'
 import { todayStr } from '../lib/dates'
+import { recordDeletion } from '../sync/tombstones'
 
 export interface AwardResult {
   completion: Completion | null
@@ -58,11 +59,7 @@ export async function toggleCompletion(
   const nowMs = now.getTime()
   return db.transaction(
     'rw',
-    db.completions,
-    db.profiles,
-    db.badges,
-    db.badgeAwards,
-    db.challenges,
+    [db.completions, db.profiles, db.badges, db.badgeAwards, db.challenges, db.tombstones],
     async () => {
       const existing = await db.completions
         .where('[profileId+date]')
@@ -77,6 +74,7 @@ export async function toggleCompletion(
       // --- Undo path ---
       if (existing) {
         await db.completions.delete(existing.id)
+        await recordDeletion('completions', existing.id)
         const granted =
           existing.status === 'done' || existing.status === 'approved'
         const fresh = await db.profiles.get(profile.id)

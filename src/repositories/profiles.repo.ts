@@ -4,6 +4,7 @@ import { uid } from '../lib/id'
 import { hashPin } from '../lib/pin'
 import { levelForXp } from '../domain/gamification'
 import { getSettings } from './settings.repo'
+import { recordDeletion } from '../sync/tombstones'
 
 export function listProfiles(): Promise<Profile[]> {
   return db.profiles.orderBy('sortOrder').toArray()
@@ -76,6 +77,8 @@ export async function deleteProfile(id: string): Promise<void> {
     await db.redemptions.where('profileId').equals(id).delete()
     await db.badgeAwards.where('profileId').equals(id).delete()
   })
+  // One profile tombstone; the hub + other devices cascade-delete related rows.
+  await recordDeletion('profiles', id)
 }
 
 /** Adjust a profile's spendable points (e.g. on redemption). Never below 0. */
